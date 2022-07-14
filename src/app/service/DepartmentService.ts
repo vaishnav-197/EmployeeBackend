@@ -22,10 +22,22 @@ export class DepartmentService{
         return departmentrepo;
     }
 
-    async updateDepartment(id:string , data:ObjectLiteral){
+    async updateDepartment(id:string , data:CreateDepartmentDto){
         const dept = this.departmentRepository.getDepartmentById(id)
         if(dept){
-            return this.departmentRepository.updateDepartment(id,data)
+            const dept : Department = plainToClass(Department , {
+                name: data.name
+            })
+            return this.departmentRepository.updateDepartment(id,dept)
         }
     }
+
+    async deleteDepartment(id:string ){
+        const dept = this.departmentRepository.getDepartmentById(id)
+        if(dept){
+            const data = this.departmentRepository.deleteDepartment(id)
+            return data
+        }
+    }
+
     }

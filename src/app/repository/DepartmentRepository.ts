@@ -23,6 +23,11 @@ export class DepartmentRespository{
    async updateDepartment(id:string , data:ObjectLiteral){
     const departmentRepo = getConnection().getRepository(Department);
     return departmentRepo.update(id,data)
-    
+   }
+
+
+   async deleteDepartment(id:string){
+    const departmentRepo = getConnection().getRepository(Department);
+          return departmentRepo.softDelete( id )
    }
     }

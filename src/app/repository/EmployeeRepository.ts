@@ -9,7 +9,7 @@ export class EmployeeRespository{
         return employee.find({relations:['department' , 'address']});
     }
 
-    async createEmployees(data : Employee){
+    async createEmployees(data : Employee)  {
          const employee = getConnection().getRepository(Employee);
          return employee.save(data);
     }
@@ -19,9 +19,9 @@ export class EmployeeRespository{
           return employee.update({ id } , data)
     }
 
-    async getEmployeeById(Id: string){
+    async getEmployeeById(id: string){
      const employee = getConnection().getRepository(Employee);
-     return employee.findOne( Id , {relations:['department' , 'address']})
+     return employee.findOne( id , {relations:['department' , 'address']})
      }   
 
 

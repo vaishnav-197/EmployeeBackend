@@ -24,6 +24,9 @@ class DepartmentController extends AbstractController {
     this.router.put(`${this.path}/:id`, 
       authorize([Roles.ADMIN,Roles.HR]),   
       this.departmentUpdate);
+    this.router.delete(`${this.path}/:id`, 
+      authorize([Roles.ADMIN,Roles.HR]),   
+      this.departmentDelete);
   }
   private departmentResponse = async (request: RequestWithUser, response: Response, next: NextFunction) => {
     try {
@@ -47,7 +50,17 @@ class DepartmentController extends AbstractController {
   private departmentUpdate =  async (request: RequestWithUser, response: Response, next: NextFunction) => {
     try {
       response.status(200);
-      response.send( await this.departmentService.updateDepartment(request.params.id, request.body));
+      const data : CreateDepartmentDto = request.body
+      response.send( await this.departmentService.updateDepartment(request.params.id, data));
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  private departmentDelete =  async (request: RequestWithUser, response: Response, next: NextFunction) => {
+    try {
+      response.status(200);
+      response.send( await this.departmentService.deleteDepartment(request.params.id));
     } catch (error) {
       return next(error);
     }
