@@ -24,7 +24,8 @@ class DepartmentController extends AbstractController {
       this.departmentCreate);
 
     this.router.put(`${this.path}/:id`, 
-      authorize([Roles.ADMIN,Roles.HR]),   
+      authorize([Roles.ADMIN,Roles.HR]), 
+      validationMiddleware(CreateDepartmentDto, APP_CONSTANTS.body), 
       this.departmentUpdate);
 
     this.router.delete(`${this.path}/:id`, 
@@ -33,7 +34,7 @@ class DepartmentController extends AbstractController {
 
   }
 
-  
+
   private departmentResponse = async (request: RequestWithUser, response: Response, next: NextFunction) => {
     try {
       response.status(200);
