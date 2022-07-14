@@ -17,17 +17,23 @@ class DepartmentController extends AbstractController {
     this.router.get(`${this.path}`,
       authorize([Roles.ADMIN,Roles.HR,Roles.ENGINEER,Roles.MANAGER]), 
       this.departmentResponse);
+
     this.router.post(`${this.path}`, 
       authorize([Roles.ADMIN,Roles.HR]), 
       validationMiddleware(CreateDepartmentDto, APP_CONSTANTS.body) ,
       this.departmentCreate);
+
     this.router.put(`${this.path}/:id`, 
       authorize([Roles.ADMIN,Roles.HR]),   
       this.departmentUpdate);
+
     this.router.delete(`${this.path}/:id`, 
       authorize([Roles.ADMIN,Roles.HR]),   
       this.departmentDelete);
+
   }
+
+  
   private departmentResponse = async (request: RequestWithUser, response: Response, next: NextFunction) => {
     try {
       response.status(200);

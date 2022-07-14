@@ -39,7 +39,7 @@ export class EmployeeRespository{
           
           }  
     
-    async updateEmployeeAddress(Id: string , data: ObjectLiteral){
+    async updateEmployeeAddress(Id: string , data: Address){
      const address = getConnection().getRepository(Address);
      return address.update({ id :Id }  , data)
      

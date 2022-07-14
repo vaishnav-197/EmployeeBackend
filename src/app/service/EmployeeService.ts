@@ -12,6 +12,8 @@ import UserNotAuthorizedException from "../exception/UserNotAuthorizedException"
 import IncorrectUsernameOrPasswordException from "../exception/IncorrectUsernameOrPasswordException";
 import jsonwebtoken from 'jsonwebtoken'
 import { UpdateEmployeeDto } from "../dto/UpdateEmployeeDto";
+import { AddressDto } from "../dto/AddressDto";
+import { Address } from "../entities/Address";
 
 export class EmployeeService{
 
@@ -70,8 +72,16 @@ export class EmployeeService{
     }
 
     async deleteEmployee(Id : string){
-        const deleteEmployee = await this.employeeRepository.deleteEmployee(Id)
-        return deleteEmployee
+         const getEmployee  = await this.employeeRepository.getEmployeeById(Id);
+         if(!getEmployee){
+             throw new EntityNotFoundException(ErrorCodes.USER_WITH_ID_NOT_FOUND);
+         }
+         else{
+            const deleteEmployee = await this.employeeRepository.deleteEmployee(Id)
+            return deleteEmployee
+         }
+
+        
     }
 
     async getEmployeeById(Id:string  ){
@@ -85,14 +95,17 @@ export class EmployeeService{
         
     }
 
-    async UpdateAddress(Id:string , data: ObjectLiteral){
+    async UpdateAddress(Id:string , data: AddressDto){
       const getEmployee  = await this.employeeRepository.getEmployeeById(Id);
       if(!getEmployee){
           throw new EntityNotFoundException(ErrorCodes.USER_WITH_ID_NOT_FOUND);
       }
       else{
-
-          const updatedAddress = await this.employeeRepository.updateEmployeeAddress( getEmployee.address.id , data)
+          const address : Address = plainToClass(Address, {
+            address: data.address,
+            pin: data.pin ,
+          });
+          const updatedAddress = await this.employeeRepository.updateEmployeeAddress( getEmployee.address.id , address)
           return updatedAddress
       }
     }

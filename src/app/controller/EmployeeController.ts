@@ -8,6 +8,7 @@ import { CreateEmployeeDto } from "../dto/CreateEmployeeDto";
 import  authorize  from "../middeware/AuthMiddeware"
 import { Roles } from "../util/rest/roles";
 import { UpdateEmployeeDto } from "../dto/UpdateEmployeeDto";
+import { AddressDto } from "../dto/AddressDto";
 
 class EmployeeController extends AbstractController {
   constructor(private employeeService: EmployeeService) {
@@ -115,9 +116,9 @@ class EmployeeController extends AbstractController {
   private deleteEmployee = async (request: RequestWithUser, response: Response, next: NextFunction) => {
     try {
 
-      
+      const data = await this.employeeService.deleteEmployee(request.params.id)
       response.status(200);
-      response.send( await this.employeeService.deleteEmployee(request.params.id));
+      response.send( data);
       
     } catch (error) {
       return next(error); 
@@ -128,9 +129,9 @@ class EmployeeController extends AbstractController {
   private updateAddress = async (request: RequestWithUser, response: Response, next: NextFunction) => {
     try {
 
-      
+      const data : AddressDto = request.body
       response.status(200);
-      response.send( await this.employeeService.UpdateAddress(request.params.id , request.body));
+      response.send( await this.employeeService.UpdateAddress(request.params.id , data));
       
     } catch (error) {
       return next(error); 
